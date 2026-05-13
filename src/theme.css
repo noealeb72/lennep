@@ -1,0 +1,158 @@
+/* Paleta por defecto: turquesa Lennep (actual). Alternativa: verde + celeste. */
+:root {
+  --c-brand: #59c3b9;
+  --c-brand-nav: #72cfd0;
+  --c-brand-soft: #4ab8b0;
+  --c-brand-cta: #55cdca;
+  --c-brand-cta-h: #48c2bf;
+  --c-brand-deep: #3db0a5;
+  --c-stat-h: #4db8aa;
+  --c-footer: #4fc7c4;
+  --c-chart-border: #3aa89e;
+  --c-chart-text: #2d8a82;
+  --c-soft-text: #2a9d8f;
+  --c-soft-text2: #2a9d91;
+  --c-ui-border-mint: #cfe8e6;
+  --c-nav-hover-bg: #f4fcfb;
+  --c-panel-soft: #dff5f2;
+  --c-panel-soft2: #e4f6f3;
+  --c-benefits-grad: linear-gradient(180deg, #f7fcfb 0%, #f2f8f7 45%, #ffffff 100%);
+  --c-benefit-border-t: #e8f0ee;
+  --c-benefit-border-b: #eef4f2;
+  --g-hero: linear-gradient(135deg, #3d8f89 0%, #56b9b1 42%, #5ec9c0 100%);
+  --g-stat: linear-gradient(145deg, #59c3b9 0%, #3a9d94 48%, #2a8f87 100%);
+  --g-hex: linear-gradient(160deg, #3d9e96 0%, #4db6ac 45%, #5ec9c0 100%);
+  --g-services: linear-gradient(165deg, #3a9e96 0%, #4abfb5 42%, #4fc7c4 100%);
+  --rgb-a: 89, 195, 185;
+  --rgb-b: 85, 205, 202;
+  --rgb-glow: 77, 184, 170;
+  --rgb-deep-teal: 30, 110, 105;
+  --rgb-dark2: 45, 120, 112;
+  --rgb-hex-shadow: 30, 120, 112;
+  --rgb-shadow-mid: 58, 168, 158;
+  --rgb-glow-dark: 45, 140, 130;
+  --rgb-form-dark: 45, 130, 120;
+  --rgb-benefit2: 42, 157, 143;
+  --meta-theme-color: #4fc7c4;
+}
+
+[data-color-scheme='verde-celeste'] {
+  /* Paleta solo celeste: sin degradados en CTAs ni mezcla verde */
+  --c-brand: #42a5d4;
+  --c-brand-nav: #5eb3e8;
+  --c-brand-soft: #5eb3e8;
+  --c-brand-cta: #42a5d4;
+  --c-brand-cta-h: #2d8ec4;
+  --c-brand-deep: #2b8cac;
+  --c-stat-h: #3599cf;
+  --c-footer: #42a5d4;
+  --c-chart-border: #42a5d4;
+  --c-chart-text: #1a5a7a;
+  --c-soft-text: #2b8cac;
+  --c-soft-text2: #2d8ec4;
+  --c-ui-border-mint: #c5e1f0;
+  --c-nav-hover-bg: #eff8fd;
+  --c-panel-soft: #e3f2fd;
+  --c-panel-soft2: #e5f0f5;
+  --c-benefits-grad: linear-gradient(180deg, #f2f9fc 0%, #eef6f3 45%, #ffffff 100%);
+  --c-benefit-border-t: #dcecf5;
+  --c-benefit-border-b: #e2eef5;
+  --g-hero: #42a5d4;
+  --g-stat: #42a5d4;
+  --g-hex: #42a5d4;
+  --g-services: #42a5d4;
+  --rgb-a: 66, 165, 212;
+  --rgb-b: 66, 165, 212;
+  --rgb-glow: 66, 165, 212;
+  --rgb-deep-teal: 30, 100, 130;
+  --rgb-dark2: 45, 120, 150;
+  --rgb-hex-shadow: 35, 110, 140;
+  --rgb-shadow-mid: 58, 155, 200;
+  --rgb-glow-dark: 45, 130, 170;
+  --rgb-form-dark: 40, 120, 155;
+  --rgb-benefit2: 66, 165, 212;
+  --meta-theme-color: #42a5d4;
+}
+
+[data-color-scheme='verde-celeste'] .nav__locale {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235EB3E8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+.color-scheme-toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 1px solid var(--c-ui-border-mint);
+  border-radius: 999px;
+  background: var(--c-nav-hover-bg);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out-soft),
+    border-color var(--duration-fast) var(--ease-out-soft);
+}
+
+.color-scheme-toggle:hover {
+  border-color: var(--c-brand-cta);
+}
+
+.color-scheme-toggle:focus-visible {
+  outline: 2px solid var(--c-brand);
+  outline-offset: 2px;
+}
+
+.color-scheme-toggle__track {
+  position: absolute;
+  inset: 2px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--c-brand) 0%, var(--c-brand-cta) 100%);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+[data-color-scheme='verde-celeste'] .color-scheme-toggle__track {
+  background: var(--c-brand);
+  opacity: 0.45;
+}
+
+.color-scheme-toggle__thumb {
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(26, 43, 69, 0.18);
+  transform: translate(0, -50%);
+  transition: transform var(--duration) var(--ease-out-soft);
+  pointer-events: none;
+}
+
+.color-scheme-toggle[aria-checked='true'] .color-scheme-toggle__thumb {
+  transform: translate(1.2rem, -50%);
+}
+
+.color-scheme-toggle--mobile-bar {
+  margin-inline-end: 0.35rem;
+}
+
+.nav-mobile-drawer__theme {
+  padding: 0.85rem 1.25rem 0.25rem;
+  border-top: 1px solid #e8edf2;
+  margin-top: 0.5rem;
+}
+
+.nav-mobile-drawer__theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.nav-mobile-drawer__theme-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #5a6570;
+}

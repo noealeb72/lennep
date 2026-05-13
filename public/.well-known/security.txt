@@ -1,0 +1,4 @@
+# https://www.rfc-editor.org/rfc/rfc9116.html
+Contact: mailto:contacto@lennepgroup.com
+Preferred-Languages: es, en, pt
+Expires: 2027-03-28T12:00:00.000Z

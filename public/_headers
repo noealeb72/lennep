@@ -1,0 +1,11 @@
+# Netlify: Vite copia este archivo a dist/. Si editas el <script> inline del tema en index.html,
+# vuelve a calcular sha256 del cuerpo del script y actualiza script-src en esta CSP y en vercel.json.
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-DNS-Prefetch-Control: off
+  Cross-Origin-Opener-Policy: same-origin
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-Kn2AoKCeXEw2RprbdrBrvLjyhdXtG57sVmC4plerJrI=' blob:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self' https://formsubmit.co; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; worker-src 'none'; upgrade-insecure-requests

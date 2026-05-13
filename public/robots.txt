@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap en dist/ incluye /es/, /pt/ y /en/ (npm run build → scripts/seo-postbuild.mjs).
+# URL base: VITE_SITE_URL (ver .env.example).

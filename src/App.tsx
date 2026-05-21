@@ -7,7 +7,7 @@ import { WhatsAppMark } from './components/WhatsAppMark'
 import { SeoHead } from './components/SeoHead'
 import { useLocale } from './locale/LocaleContext'
 import { buildMailtoContactUrl, submitContactToInbox } from './locale/contactFormSubmit'
-import { whatsappConversationUrl } from './locale/whatsappUrl'
+import { whatsappConversationUrl, whatsappSpecialtyInquiryUrl } from './locale/whatsappUrl'
 import { useSitePaths } from './routing/SitePathsContext'
 
 const BENEFIT_ROWS = [
@@ -266,23 +266,23 @@ function App() {
             </div>
           </nav>
 
-          <ColorSchemeToggle className="color-scheme-toggle--mobile-bar" />
-          <HeaderRegionSelect variant="mobile" />
-
-          <button
-            type="button"
-            className="nav__menu-toggle"
-            aria-expanded={menuOpen}
-            aria-controls="nav-mobile-drawer"
-            onClick={() => setMenuOpen((o) => !o)}
-          >
-            <span className="sr-only">{menuOpen ? t('nav.menuClose') : t('nav.menu')}</span>
-            <span className="nav__menu-bars" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </span>
-          </button>
+          <div className="header__mobile-bar">
+            <HeaderRegionSelect variant="mobile" />
+            <button
+              type="button"
+              className="nav__menu-toggle"
+              aria-expanded={menuOpen}
+              aria-controls="nav-mobile-drawer"
+              onClick={() => setMenuOpen((o) => !o)}
+            >
+              <span className="sr-only">{menuOpen ? t('nav.menuClose') : t('nav.menu')}</span>
+              <span className="nav__menu-bars" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </span>
+            </button>
+          </div>
         </div>
 
         <div
@@ -648,10 +648,16 @@ function App() {
             <ul className="modalidades-section__grid">
               {ta('modalidades.items').map((nombre, i) => (
                 <li key={`modalidad-${i}`}>
-                  <div className="modalidad-item">
+                  <a
+                    className="modalidad-item"
+                    href={whatsappSpecialtyInquiryUrl(nombre, t('modalidades.wa.preset'))}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={t('modalidades.wa.aria').replace('{specialty}', nombre)}
+                  >
                     <span className="modalidad-item__dot" aria-hidden="true" />
                     <span className="modalidad-item__label">{nombre}</span>
-                  </div>
+                  </a>
                 </li>
               ))}
             </ul>

@@ -76,6 +76,8 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'modalidades.title': 'Cobertura por especialidades médicas',
     'modalidades.lead':
       'Profesionales de referencia en estas áreas para complementar el servicio de telemedicina de su institución.',
+    'modalidades.wa.preset': 'Hola, me gustaría recibir información sobre {specialty}.',
+    'modalidades.wa.aria': 'Consultar por WhatsApp: {specialty}',
     'modalidades.items': [
       'Medicina General / Medicina Familiar',
       'Clínica Médica / Medicina Interna',
@@ -220,6 +222,8 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'modalidades.title': 'Cobertura por especialidades médicas',
     'modalidades.lead':
       'Profissionais de referência nestas áreas para complementar o serviço de telemedicina da sua instituição.',
+    'modalidades.wa.preset': 'Olá, gostaria de receber informações sobre {specialty}.',
+    'modalidades.wa.aria': 'Consultar pelo WhatsApp: {specialty}',
     'modalidades.items': [
       'Medicina Geral / Medicina Familiar',
       'Clínica Médica / Medicina Interna',
@@ -363,6 +367,8 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'modalidades.title': 'Coverage across medical specialties',
     'modalidades.lead':
       'Reference professionals in these areas to complement your institution’s telemedicine service.',
+    'modalidades.wa.preset': 'Hello, I would like information about {specialty}.',
+    'modalidades.wa.aria': 'Ask on WhatsApp about {specialty}',
     'modalidades.items': [
       'General / family medicine',
       'Internal medicine',

@@ -262,6 +262,7 @@ function App() {
               <a className="nav__cta" href="#contacto">
                 {t('nav.contactar')}
               </a>
+              <ColorSchemeToggle className="color-scheme-toggle--desktop" />
               <HeaderRegionSelect variant="desktop" />
             </div>
           </nav>
@@ -300,13 +301,6 @@ function App() {
           aria-hidden={!menuOpen}
           inert={!menuOpen ? true : undefined}
         >
-          <div className="nav-mobile-drawer__top">
-            <button type="button" className="nav-mobile-drawer__close" onClick={closeMenu} aria-label={t('nav.menuClose')}>
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
-                <path d="M18 6 6 18M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
           <nav className="nav-mobile-drawer__nav" aria-label={t('nav.aria')}>
             <a className="nav-mobile-drawer__link" href="#servicios" onClick={closeMenu}>
               {t('nav.servicios')}

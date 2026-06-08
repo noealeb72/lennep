@@ -1,12 +1,19 @@
 import './App.css'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { FocusEvent, FormEvent } from 'react'
 import { ColorSchemeToggle } from './components/ColorSchemeToggle'
 import { HeaderRegionSelect } from './components/HeaderRegionSelect'
 import { WhatsAppMark } from './components/WhatsAppMark'
 import { SeoHead } from './components/SeoHead'
 import { useLocale } from './locale/LocaleContext'
-import { buildMailtoContactUrl, submitContactToInbox } from './locale/contactFormSubmit'
+import { checkContactFormGuard, recordContactFormSend } from './locale/contactFormGuard'
+import {
+  buildMailtoContactUrl,
+  isSafeMailtoHref,
+  sanitizeContactPayload,
+  submitContactToInbox,
+  validateContactPayload,
+} from './locale/contactFormSubmit'
 import { whatsappConversationUrl, whatsappSpecialtyInquiryUrl } from './locale/whatsappUrl'
 import { useSitePaths } from './routing/SitePathsContext'
 
@@ -99,8 +106,11 @@ function App() {
   const [heroSlide, setHeroSlide] = useState(0)
   const [heroSliderHoverPause, setHeroSliderHoverPause] = useState(false)
   const [docHidden, setDocHidden] = useState(false)
-  const [contactFormStatus, setContactFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [contactFormStatus, setContactFormStatus] = useState<
+    'idle' | 'sending' | 'success' | 'error' | 'rate_limited'
+  >('idle')
   const [contactFormMailtoHref, setContactFormMailtoHref] = useState<string | null>(null)
+  const contactFormReadyAt = useRef(Date.now())
 
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
@@ -147,7 +157,7 @@ function App() {
     if (menuOpen || docHidden || heroSliderHoverPause) return
     const id = window.setInterval(() => {
       setHeroSlide((s) => (s + 1) % 2)
-    }, 7500)
+    }, 3500)
     return () => window.clearInterval(id)
   }, [menuOpen, docHidden, heroSliderHoverPause])
 
@@ -155,23 +165,32 @@ function App() {
     e.preventDefault()
     const form = e.currentTarget
     const fd = new FormData(form)
-    const payload = {
-      nombre: String(fd.get('nombre') ?? '')
-        .trim()
-        .replace(/\s+/g, ' '),
-      institucion: String(fd.get('institucion') ?? '').trim(),
-      email: String(fd.get('email') ?? '')
-        .trim()
-        .toLowerCase(),
-      telefono: String(fd.get('telefono') ?? '').replace(/\D/g, ''),
-      mensaje: String(fd.get('mensaje') ?? '').trim(),
+    if (String(fd.get('website') ?? '').trim()) {
+      setContactFormMailtoHref(null)
+      setContactFormStatus('success')
+      form.reset()
+      return
     }
-    if (
-      payload.nombre.length < 2 ||
-      !payload.email ||
-      !payload.telefono ||
-      !payload.mensaje
-    ) {
+    const guard = checkContactFormGuard(contactFormReadyAt.current)
+    if (guard === 'too_fast') {
+      setContactFormMailtoHref(null)
+      setContactFormStatus('success')
+      form.reset()
+      return
+    }
+    if (guard === 'rate_limit') {
+      setContactFormMailtoHref(null)
+      setContactFormStatus('rate_limited')
+      return
+    }
+    const payload = sanitizeContactPayload({
+      nombre: String(fd.get('nombre') ?? ''),
+      institucion: String(fd.get('institucion') ?? ''),
+      email: String(fd.get('email') ?? ''),
+      telefono: String(fd.get('telefono') ?? ''),
+      mensaje: String(fd.get('mensaje') ?? ''),
+    })
+    if (validateContactPayload(payload)) {
       return
     }
     setContactFormMailtoHref(null)
@@ -179,11 +198,13 @@ function App() {
     const subject = t('contact.form.subject')
     const ok = await submitContactToInbox(payload, subject)
     if (ok) {
+      recordContactFormSend()
       setContactFormStatus('success')
       form.reset()
     } else {
       setContactFormStatus('error')
-      setContactFormMailtoHref(buildMailtoContactUrl(payload, subject))
+      const mailtoHref = buildMailtoContactUrl(payload, subject)
+      setContactFormMailtoHref(isSafeMailtoHref(mailtoHref) ? mailtoHref : null)
     }
   }
 
@@ -335,7 +356,11 @@ function App() {
           >
             <div className="hero-slider__viewport">
               <div
-                className={`hero-slider__pane${heroSlide === 0 ? ' hero-slider__pane--active' : ''}`}
+                className="hero-slider__track"
+                style={{ transform: `translateX(-${heroSlide * 100}%)` }}
+              >
+              <div
+                className="hero-slider__pane"
                 aria-hidden={heroSlide !== 0}
                 inert={heroSlide !== 0}
               >
@@ -380,7 +405,7 @@ function App() {
               </div>
 
               <div
-                className={`hero-slider__pane${heroSlide === 1 ? ' hero-slider__pane--active' : ''}`}
+                className="hero-slider__pane"
                 aria-hidden={heroSlide !== 1}
                 inert={heroSlide !== 1}
               >
@@ -424,6 +449,7 @@ function App() {
                     </div>
                   </div>
                 </section>
+              </div>
               </div>
             </div>
 
@@ -501,7 +527,7 @@ function App() {
                     <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <p className="stat-tile__value">8+</p>
+                <p className="stat-tile__value">+8</p>
                 <p className="stat-tile__label">{t('stat.modalidades')}</p>
               </article>
             </div>
@@ -732,6 +758,14 @@ function App() {
 
               <div className="contact-section__form-wrap">
                 <form className="contact-form" onSubmit={handleContactSubmit}>
+                  <input
+                    className="contact-form__hp"
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                  />
                   <h3 className="contact-form__title">{t('contact.form.title')}</h3>
                   <div className="contact-form__fields">
                     <label className="contact-form__field">
@@ -761,6 +795,7 @@ function App() {
                         name="institucion"
                         placeholder={t('contact.form.org.ph')}
                         autoComplete="organization"
+                        maxLength={200}
                       />
                     </label>
                     <label className="contact-form__field">
@@ -803,6 +838,8 @@ function App() {
                         name="mensaje"
                         rows={4}
                         placeholder={t('contact.form.message.ph')}
+                        minLength={10}
+                        maxLength={5000}
                         required
                       />
                     </label>
@@ -812,7 +849,7 @@ function App() {
                       className={`contact-form__feedback${
                         contactFormStatus === 'success'
                           ? ' contact-form__feedback--success'
-                          : contactFormStatus === 'error'
+                          : contactFormStatus === 'error' || contactFormStatus === 'rate_limited'
                             ? ' contact-form__feedback--error'
                             : ' contact-form__feedback--sending'
                       }`}
@@ -821,6 +858,7 @@ function App() {
                     >
                       {contactFormStatus === 'sending' && t('contact.form.sending')}
                       {contactFormStatus === 'success' && t('contact.form.success')}
+                      {contactFormStatus === 'rate_limited' && t('contact.form.rateLimit')}
                       {contactFormStatus === 'error' && (
                         <>
                           {t('contact.form.error')}
@@ -856,29 +894,29 @@ function App() {
         <div className="footer__inner">
           <div className="footer__grid">
             <div className="footer__main">
-              <div className="footer__brand">
-                <span className="footer__logo-stack">
+              <div className="footer__brand brand brand--on-dark">
+                <span className="brand__logo-stack">
                   <img
-                    className="footer__logo footer__logo--lennep"
+                    className="brand__logo brand__logo--lennep"
                     src={BRAND_LOGO_DEFAULT}
                     alt={t('brand.logoAlt')}
-                    width="176"
-                    height="69"
+                    width="312"
+                    height="104"
                     decoding="async"
                   />
                   <img
-                    className="footer__logo footer__logo--celeste"
+                    className="brand__logo brand__logo--celeste"
                     src={BRAND_LOGO_CELESTE}
                     alt={t('brand.logoAlt')}
-                    width="176"
-                    height="69"
+                    width="312"
+                    height="104"
                     decoding="async"
                   />
                 </span>
-                <div className="footer__text">
-                  <span className="footer__name">lennep</span>
-                  <span className="footer__subtitle">{t('brand.subtitle')}</span>
-                </div>
+                <span className="brand__text">
+                  <span className="brand__name">lennep</span>
+                  <span className="brand__subtitle">{t('brand.subtitle')}</span>
+                </span>
               </div>
               <p className="footer__about">{t('footer.about')}</p>
             </div>

@@ -118,6 +118,27 @@ export function applySeoToDocument(payload: SeoPayload): void {
   ensureMeta('name', 'twitter:image').setAttribute('content', ogImage)
 
   const orgHome = `${origin}/`
+  const areaServed = [
+    'Argentina',
+    'Bolivia',
+    'Brasil',
+    'Chile',
+    'Colombia',
+    'Costa Rica',
+    'Ecuador',
+    'El Salvador',
+    'Guatemala',
+    'Honduras',
+    'México',
+    'Nicaragua',
+    'Panamá',
+    'Paraguay',
+    'Perú',
+    'República Dominicana',
+    'Uruguay',
+    'Venezuela',
+  ].map((name) => ({ '@type': 'Country' as const, name }))
+
   const json = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -129,6 +150,7 @@ export function applySeoToDocument(payload: SeoPayload): void {
       '@type': 'ImageObject',
       url: ogImage,
     },
+    areaServed,
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',

@@ -19,7 +19,7 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'nav.theme.aria': 'Cambiar paleta de colores del sitio',
     'nav.theme.title': 'Turquesa Lennep o verde y celeste',
     'nav.theme.label': 'Paleta',
-    'brand.subtitle': 'servicio de telemedicina',
+    'brand.subtitle': 'Servicio de telemedicina',
     'brand.logoAlt': 'Lennep — servicio de telemedicina',
     'seo.title': 'Lennep | Teleradiología y diagnóstico por imágenes 24/7',
     'seo.description':
@@ -143,9 +143,11 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'contact.form.success': 'Mensaje enviado. Nos pondremos en contacto a la brevedad.',
     'contact.form.error':
       'No se pudo enviar desde el navegador. Podés completar el envío con tu correo o intentar de nuevo.',
+    'contact.form.rateLimit':
+      'Demasiados intentos. Esperá un momento antes de volver a enviar.',
     'contact.form.mailtoLink': 'Abrir correo para enviar',
     'footer.about':
-      'En Lennep diseñamos soluciones integrales que combinan innovación, tecnología,\ndatos y un equipo de salud comprometido con la excelencia asistencial.',
+      'En Lennep diseñamos soluciones integrales que combinan innovación, tecnología, datos y un equipo de salud comprometido con la excelencia asistencial.',
     'footer.copy': '© 2026 Lennep. Todos los derechos reservados. - NAB Servicios Digitales',
     'wa.aria': 'Escribir por WhatsApp a Lennep',
   },
@@ -165,7 +167,7 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'nav.theme.aria': 'Alternar paleta de cores do site',
     'nav.theme.title': 'Turquesa Lennep ou verde e azul claro',
     'nav.theme.label': 'Paleta',
-    'brand.subtitle': 'serviço de telemedicina',
+    'brand.subtitle': 'Serviço de telemedicina',
     'brand.logoAlt': 'Lennep — serviço de telemedicina',
     'seo.title': 'Lennep | Telerradiologia e diagnóstico por imagens 24/7',
     'seo.description':
@@ -199,8 +201,8 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'servicesDetail.introList': 'Apoiando clínicas, hospitais e centros de imagem com:',
     'servicesDetail.bullets': [
       'apoio em casos complexos',
-      'cobertura de subspecialidades diante de ausências, férias ou necessidades transitórias ou permanentes',
-      'elaboração de laudos preliminares para melhorar os tempos de resposta e a capacidade operativa',
+      'cobertura de subespecialidades diante de ausências, férias ou necessidades transitórias ou permanentes',
+      'elaboração de laudos preliminares para melhorar os tempos de resposta e a capacidade operacional',
     ],
     'servicesDetail.hex1Alt': 'Exame de raio-X ou imagem médica para diagnóstico',
     'servicesDetail.hex2Alt': 'Instituição de saúde e ambiente hospitalar',
@@ -216,7 +218,7 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'services.card1.text': 'Apoio para plantões, urgências e picos de demanda.',
     'services.card2.title': 'Cobertura programada',
     'services.card2.text': 'Substituições, férias e expansão de capacidade.',
-    'services.card3.title': 'Equipe subspecializada',
+    'services.card3.title': 'Equipe subespecializada',
     'services.card3.text': 'Rede médica ampla para múltiplas modalidades.',
     'modalidades.badge': 'Especialidades',
     'modalidades.title': 'Cobertura por especialidades médicas',
@@ -240,8 +242,8 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
       'Geriatria',
       'Nutrição',
       'Medicina da Dor e Cuidados Paliativos',
-      'Urgências de baixa complexidade / triagem',
-      'Telerradiologia / segunda opinião em diagnóstico',
+      'Urgências de Baixa Complexidade / Triagem',
+      'Telerradiologia / Segunda Opinião em Diagnóstico',
       'Psicologia / Psicoterapia',
     ],
     'benefits.badge': 'Por que nos escolher',
@@ -289,9 +291,11 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'contact.form.success': 'Mensagem enviada. Entraremos em contato em breve.',
     'contact.form.error':
       'Não foi possível enviar pelo navegador. Você pode enviar pelo seu e-mail ou tentar novamente.',
+    'contact.form.rateLimit':
+      'Muitas tentativas. Aguarde um momento antes de enviar novamente.',
     'contact.form.mailtoLink': 'Abrir e-mail para enviar',
     'footer.about':
-      'Na Lennep desenhamos soluções integrais que combinam inovação, tecnologia,\ndados e equipe de saúde comprometida com a excelência assistencial.',
+      'Na Lennep desenhamos soluções integrais que combinam inovação, tecnologia, dados e equipe de saúde comprometida com a excelência assistencial.',
     'footer.copy': '© 2026 Lennep. Todos os direitos reservados. - NAB Servicios Digitales',
     'wa.aria': 'Escrever no WhatsApp para Lennep',
   },
@@ -300,7 +304,7 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'nav.servicios': 'Services',
     'nav.cobertura': 'Coverage',
     'nav.modalidades': 'Specialties',
-    'nav.beneficios': 'Why choose us',
+    'nav.beneficios': 'Why choose us?',
     'nav.contactar': 'Contact',
     'nav.menu': 'Open menu',
     'nav.menuClose': 'Close menu',
@@ -311,7 +315,7 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'nav.theme.aria': 'Switch site color palette',
     'nav.theme.title': 'Lennep teal or green and sky blue',
     'nav.theme.label': 'Palette',
-    'brand.subtitle': 'telemedicine service',
+    'brand.subtitle': 'Telemedicine service',
     'brand.logoAlt': 'Lennep — telemedicine service',
     'seo.title': 'Lennep | Teleradiology and diagnostic imaging 24/7',
     'seo.description':
@@ -389,7 +393,7 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
       'Teleradiology / second opinion in diagnosis',
       'Psychology / psychotherapy',
     ],
-    'benefits.badge': 'Why choose us',
+    'benefits.badge': 'Why choose us?',
     'benefits.title': 'Benefits of working with Lennep',
     'benefits.subtitle': 'More than 35 specialists committed to diagnostic excellence',
     'benefit.0.title': 'Flexible coverage',
@@ -434,9 +438,11 @@ export const messages: Record<AppLocale, Record<string, MsgVal>> = {
     'contact.form.success': 'Message sent. We will get back to you shortly.',
     'contact.form.error':
       'Could not send from the browser. You can send via your email app or try again.',
+    'contact.form.rateLimit':
+      'Too many attempts. Please wait a moment before sending again.',
     'contact.form.mailtoLink': 'Open email app to send',
     'footer.about':
-      'At Lennep we design end-to-end solutions that bring together innovation, technology,\ndata, and a healthcare team committed to clinical excellence.',
+      'At Lennep we design end-to-end solutions that bring together innovation, technology, data, and a healthcare team committed to clinical excellence.',
     'footer.copy': '© 2026 Lennep. All rights reserved. - NAB Servicios Digitales',
     'wa.aria': 'Message Lennep on WhatsApp',
   },

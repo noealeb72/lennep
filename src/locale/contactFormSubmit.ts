@@ -11,6 +11,21 @@ export type ContactFormPayload = {
   mensaje: string
 }
 
+const CONTROL_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g
+const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/
+
+/** Quita caracteres de control; no interpreta HTML (React ya escapa en pantalla). */
+export function sanitizeContactPayload(raw: ContactFormPayload): ContactFormPayload {
+  const strip = (value: string) => value.replace(CONTROL_CHARS, '')
+  return {
+    nombre: strip(raw.nombre).trim().replace(/\s+/g, ' '),
+    institucion: strip(raw.institucion).trim(),
+    email: strip(raw.email).trim().toLowerCase(),
+    telefono: strip(raw.telefono).replace(/\D/g, ''),
+    mensaje: strip(raw.mensaje).trim(),
+  }
+}
+
 /** Texto único para el cuerpo del mail (FormSubmit plantilla "box"). */
 export function formatContactEmailBody(p: ContactFormPayload): string {
   const dash = '—'
@@ -51,13 +66,18 @@ export function buildMailtoContactUrl(p: ContactFormPayload, subject: string): s
   return `mailto:${CONTACT_INBOX}?${q.toString()}`
 }
 
-/** Validar y sanitizar payload antes de envío. */
-function validatePayload(p: ContactFormPayload): string | null {
-  if (!p.nombre || p.nombre.length < 2) return 'Nombre inválido'
-  if (!p.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email)) return 'Email inválido'
-  if (!p.mensaje || p.mensaje.length < 10) return 'Mensaje insuficiente'
-  if (p.nombre.length > 500 || p.mensaje.length > 5000) return 'Contenido excesivo'
+/** Validar payload ya sanitizado antes de envío. */
+export function validateContactPayload(p: ContactFormPayload): string | null {
+  if (!p.nombre || p.nombre.length < 2 || p.nombre.length > 120) return 'Nombre inválido'
+  if (p.institucion.length > 200) return 'Institución demasiado larga'
+  if (!p.email || !EMAIL_RE.test(p.email) || p.email.length > 254) return 'Email inválido'
+  if (!p.telefono || !/^[0-9]{8,15}$/.test(p.telefono)) return 'Teléfono inválido'
+  if (!p.mensaje || p.mensaje.length < 10 || p.mensaje.length > 5000) return 'Mensaje inválido'
   return null
+}
+
+export function isSafeMailtoHref(href: string): boolean {
+  return href.startsWith(`mailto:${CONTACT_INBOX}?`)
 }
 
 /** Genera y valida token CSRF basado en client-side. */
@@ -76,10 +96,8 @@ export async function submitContactToInbox(
   p: ContactFormPayload,
   subject: string
 ): Promise<boolean> {
-  // Validar datos
-  const validationError = validatePayload(p)
-  if (validationError) {
-    console.warn('[Contact Form]', validationError)
+  const payload = sanitizeContactPayload(p)
+  if (validateContactPayload(payload)) {
     return false
   }
 
@@ -93,19 +111,18 @@ export async function submitContactToInbox(
         'X-CSRF-Token': csrfToken,
       },
       body: JSON.stringify({
-        _subject: `${subject} · ${p.nombre}`,
-        _replyto: p.email,
+        _subject: `${subject} · ${payload.nombre}`,
+        _replyto: payload.email,
         _template: 'box',
-        _captcha: false, // Desactivado: usando honeypot en cliente
+        _captcha: false,
         _csrf: csrfToken,
-        Solicitud: formatContactEmailBody(p),
+        Solicitud: formatContactEmailBody(payload),
       }),
     })
     if (!res.ok) return false
     const data = (await res.json()) as { success?: boolean }
     return Boolean(data.success)
-  } catch (err) {
-    console.error('[Contact Form] Error:', err)
+  } catch {
     return false
   }
 }

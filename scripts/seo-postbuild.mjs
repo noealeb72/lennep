@@ -19,10 +19,28 @@ const lastmod = new Date().toISOString().slice(0, 10)
 /** Debe coincidir con `src/routing/localePaths.ts` → LOCALE_PATH_SEGMENTS */
 const localePaths = ['es', 'pt', 'en']
 
+/** Debe coincidir con `replaceHreflangAlternates` en src/seo/documentMeta.ts */
+const hreflangAlternates = [
+  ['es', 'es'],
+  ['pt-BR', 'pt'],
+  ['en', 'en'],
+  ['x-default', 'es'],
+]
+
+function hreflangLinks() {
+  return hreflangAlternates
+    .map(
+      ([hreflang, seg]) =>
+        `    <xhtml:link rel="alternate" hreflang="${hreflang}" href="${base}/${seg}/"/>`
+    )
+    .join('\n')
+}
+
 const urlEntries = localePaths
   .map(
     (seg) => `  <url>
     <loc>${base}/${seg}/</loc>
+${hreflangLinks()}
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -31,7 +49,8 @@ const urlEntries = localePaths
   .join('\n')
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urlEntries}
 </urlset>
 `

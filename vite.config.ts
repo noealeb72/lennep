@@ -8,4 +8,7 @@ export default defineConfig({
     port: 5179,
     strictPort: true,
   },
+  build: {
+    sourcemap: false,
+  },
 })
